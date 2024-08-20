@@ -1,0 +1,6 @@
+## Get Requst for App COntroller
+
+send 
+GET http://localhost:3003/
+
+GET http://localhost:3003/users
