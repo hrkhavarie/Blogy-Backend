@@ -10,7 +10,6 @@ export class CreateUserDto {
     
     @IsString()
     @IsOptional()
-    
     lastName?:string ;
 
     @IsEmail()
