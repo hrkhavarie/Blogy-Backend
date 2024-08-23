@@ -3,19 +3,20 @@ Content-Type: application/json
 
 
 {
-    "title": "first post",
+    "title": "second post",
     "postType": "post",
     "slug": "new-with-nestjs" , 
     "status": "draft" , 
     "content": "this is the post content" , 
-    "schema": "{\r\n \"@content\": \"https\/\/schema.org\", \r\n \"@type\": \"Person\"r\n}",
+    // "schema": "{\r\n \"@content\": \"https\/\/schema.org\", \r\n \"@type\": \"Person\"r\n}",
+    "schema": "this is schmea",
     "featuredImageUrl" : "http://localhost.com/images/image1.jpg" , 
-    "publishOn": "2024-03-16T07:46:32+000" , 
-    "tags": ["nestjs" , "typescritp"] , 
-    "metaOptions": [
-        {
-            "key": "testKey" , 
-            "value" : 20
-        }
-    ]
+    // "publishOn": "2023-12-04T16:30:00Z" , 
+    "tags": ["nestjs" , "typescritp"] 
+    // "metaOptions": [
+    //     {
+    //         "key": "testKey" , 
+    //         "value" : 20
+    //     }
+    // ]
 }

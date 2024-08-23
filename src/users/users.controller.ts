@@ -42,16 +42,9 @@ export class UsersController {
         return this.userService.findAll(getUsersParamDto , limit, page);
     }
     @Post() 
-    // createUser(@Req() request:Request) {
-    createUser(
-        @Body() createUserDto:CreateUserDto,
-        // @Headers() headers:any , 
-        // @Ip() ip:any
-    ) {
-        console.log(createUserDto);
-        // console.log(headers);
-        // console.log(ip);
-       return this.userService.createUser()
+    async createUser(
+        @Body() createUserDto:CreateUserDto,) {     
+          return this.userService.createUser(createUserDto)
     }
 
 

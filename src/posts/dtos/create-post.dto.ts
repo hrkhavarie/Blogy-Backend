@@ -1,25 +1,24 @@
-import { postType } from "../enums/postType.enum";
-import { postStatue } from "../enums/postStatue.enum";
-import { IsArray, IsEAN, IsEnum, IsISO8601, IsJSON, IsNotEmpty, IsOptional, IsString, IsUrl, Matches, MaxLength, MinLength, minLength, ValidateNested } from "class-validator";
+import { IsArray, IsEAN, IsEnum, isISO8601, IsISO8601, IsJSON, IsNotEmpty, IsOptional, IsString, IsUrl, Matches, MaxLength, MinLength, minLength, ValidateNested } from "class-validator";
 import { CreatePostMetaOptionDto } from "./create-post-meta-option.dto";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
+import { postStatus, postType } from "@prisma/client";
 
- /** 
-    * Structure of request body to create a new post
-    * title: string 
-    * postType: enum (post , page , stroy , series)
-    * slug: string
-    * status: enum( draft , scheduled , review , published )
-    * content? : string
-    * schema?: string
-    * featuredImageUrl?: string
-    * publishOn: Date , 
-    * tags: string[]
-    * metaOptions: [{key:'some key' , value: 'some value'}]
-    
-    */
-export class CreatePostDto{
-    
+/** 
+   * Structure of request body to create a new post
+   * title: string 
+   * postType: enum (post , page , stroy , series)
+   * slug: string
+   * status: enum( draft , scheduled , review , published )
+   * content? : string
+   * schema?: string
+   * featuredImageUrl?: string
+   * publishOn: Date , 
+   * tags: string[]
+   * metaOptions: [{key:'some key' , value: 'some value'}]
+   
+   */
+export class CreatePostDto {
+
     @IsString()
     @IsNotEmpty()
     @MinLength(3)
@@ -37,36 +36,47 @@ export class CreatePostDto{
     // })
     slug: string;
 
-    @IsEnum(postStatue)
+    @IsEnum(postStatus)
     @IsNotEmpty()
-    status: postStatue;
+    status: postStatus;
 
     @IsString()
     @IsOptional()
-    content? : string;
+    content: string;
 
     @IsString()
     // @IsJSON()
-    schema?: string;
+    @IsOptional()
+    schema: string;
 
     @IsUrl()
     @IsOptional()
-    featuredImageUrl?: string;
+    featuredImageUrl: string;
 
-    // @IsISO8601()
-    @IsOptional()
-    publishOn: Date ;
 
-    @IsOptional()
-    @IsArray()   
-    @IsString({each:true})
-    @MinLength(3, {each:true})
+    // @IsOptional()
+    // // @Transform(({ value }) => new Date(value))
+    // // @Type(() => Date)
+    // @IsISO8601({ strict: true, strictSeparator: true })
+    // @Transform(({ value }) => {
+    //   const isValidDate = isISO8601(value, { strict: true, strictSeparator: true });
+    //   if (!isValidDate) {
+    //     throw new Error(`Property "from_date" should be a valid ISO8601 date string`);
+    //   }
+    //   return new Date(value);
+    // })
+    // publishOn: Date ;
+
 
     //nested Dto
     @IsOptional()
-    tags: string[];
     @IsArray()
-    @ValidateNested({ each: true })
-    @Type(()=>CreatePostMetaOptionDto)
-    metaOptions: CreatePostMetaOptionDto[];
+    tags: string[]
+
+    // @IsArray()
+    // @ValidateNested({ each: true })
+    //  @Type(()=>CreatePostMetaOptionDto)
+    @IsOptional()
+    @IsString()
+    metaOptions: string;
 }

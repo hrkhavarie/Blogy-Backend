@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int    @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String @unique
+  password  String
+}
+
+model Post {
+  id               Int        @id @default(autoincrement())
+  title            String
+  postType         postType
+  slug             String
+  status           postStatus
+  content          String?
+  schema           String?
+  featuredImageUrl String?
+  publishOn        DateTime?
+  tags             String[]
+  metaOptions      String?
+}
+
+enum postStatus {
+  draft
+  scheduled
+  review
+  published
+}
+
+enum postType {
+  post
+  page
+  stroy
+  series
+}
+
+model tags {
+  id               Int      @id @default(autoincrement())
+  name             String   @unique
+  slug             String   @unique
+  description      String?
+  schema           String?
+  featuredImageUrl String?
+  createdDate      DateTime
+  updatedAt        DateTime
+  deletedAt        DateTime
+}
