@@ -2,21 +2,30 @@ import { forwardRef, Inject, Injectable, RequestTimeoutException, UnauthorizedEx
 import { UsersService } from 'src/users/providers/users.service';
 import { SignInDto } from '../dtos/sign-in.dto';
 import { HashingProvider } from './hashing.provider';
+import { JwtService } from '@nestjs/jwt';
+import jwtConfig from '../config/jwt.config';
+import { ConfigType } from '@nestjs/config';
 
 @Injectable()
 export class SignInProvider {
     constructor(
         @Inject(forwardRef(() => UsersService))
         private readonly userService: UsersService,
-
         private readonly hashingProvider: HashingProvider,
+
+        //Injecting jwt service
+        private readonly jwtService: JwtService,
+
+        //Inject JwtConfiguration
+        @Inject(jwtConfig.KEY)
+        private readonly jwtConfiguration: ConfigType<typeof jwtConfig>
     ) { }
 
-       public async login (signInDto: SignInDto){
-       
+    public async login(signInDto: SignInDto) {
+
         //Find the user using email ID        
-          let  user = await this.userService.findOneByEmail(signInDto.email);
-      
+        let user = await this.userService.findOneByEmail(signInDto.email);
+
         // Compare password to the hash
 
         let isEqual: Boolean = false;
@@ -32,12 +41,27 @@ export class SignInProvider {
             })
         }
 
-        if(!isEqual){
+        if (!isEqual) {
             throw new UnauthorizedException('Incorrect Password')
         }
-        
+
+        // generate access token
+        const accessToken = await this.jwtService.signAsync(
+            {
+                sub: user.id,
+                email: user.email,
+            },
+            {
+                audience: String(this.jwtConfiguration.audience) ,
+                issuer: this.jwtConfiguration.issuer,
+                secret: this.jwtConfiguration.secret,
+                expiresIn: this.jwtConfiguration.accessTokenTtl
+            })
+
         //Send confirmation
-        return true;
+        return {
+            accessToken
+        };
     }
 }
 

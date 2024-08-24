@@ -7,9 +7,16 @@ import { BcryptProvider } from './providers/bcrypt.provider';
 import { SignInProvider } from './providers/sign-in.provider';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FindOneUserByEmailProvider } from 'src/users/providers/find-one-user-by-email.provider';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import jwtConfig from './config/jwt.config';
 
 @Module({
-  imports: [forwardRef(() => UsersModule)],
+  imports: [
+    forwardRef(() => UsersModule),
+    ConfigModule.forFeature(jwtConfig),
+    JwtModule.registerAsync(jwtConfig.asProvider()),
+   ],
   controllers: [AuthController],
   providers: [
     AuthService,

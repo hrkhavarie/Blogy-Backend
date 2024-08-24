@@ -19,10 +19,35 @@ import { AuthService } from './auth/providers/auth.service';
 import { SignInProvider } from './auth/providers/sign-in.provider';
 import { HashingProvider } from './auth/providers/hashing.provider';
 import { BcryptProvider } from './auth/providers/bcrypt.provider';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
+import jwtConfig from './auth/config/jwt.config';
 
 @Module({
-  imports: [UsersModule, PostsModule, AuthModule, PrismaModule, TagsModule, MetaOtionsModule ],
-  controllers: [AppController , UsersController, AuthController],
-  providers: [AppService , UsersService , PostsService, TagsService , PrismaService , CreateUserProvider ,  FindOneUserByEmailProvider , AuthService , SignInProvider , ]
+  imports: [
+    UsersModule, 
+    PostsModule, 
+    AuthModule, 
+    PrismaModule, 
+    TagsModule, 
+    MetaOtionsModule,
+    ConfigModule.forFeature(jwtConfig),
+
+    JwtModule.registerAsync(jwtConfig.asProvider()),
+  ],
+  controllers: [AppController, UsersController, AuthController],
+  providers: [
+    AppService, 
+    UsersService, 
+    PostsService, 
+    TagsService, 
+    PrismaService, 
+    CreateUserProvider, 
+    FindOneUserByEmailProvider, 
+    AuthService, 
+    SignInProvider,
+    JwtService, 
+
+  ]
 })
-export class AppModule {}
+export class AppModule { }
