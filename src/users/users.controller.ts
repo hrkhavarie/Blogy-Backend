@@ -5,6 +5,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUsersParamDto } from './dtos/get-user.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
 import {ApiOperation, ApiQuery, ApiResponse, ApiTags} from '@nestjs/swagger'
+import { GetUserByEmailDto } from './dtos/get-user-by-email.dto';
 
 @Controller('users')
 @ApiTags('Users')
@@ -40,6 +41,16 @@ export class UsersController {
     ) {
         
         return this.userService.findAll(getUsersParamDto , limit, page);
+    }
+
+    @Get("email/:email?")
+    getUserByEmail(
+        @Param() getUserByEmailDto:GetUserByEmailDto , 
+        @Query('email' ) email:string , 
+
+){
+        return this.userService.findOneByEmail(getUserByEmailDto.email);
+
     }
     @Post() 
     async createUser(

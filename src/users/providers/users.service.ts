@@ -5,6 +5,7 @@ import { CreateUserDto } from '../dtos/create-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
 import { CreateUserProvider } from './create-user.provider';
+import { FindOneUserByEmailProvider } from './find-one-user-by-email.provider';
 
 @Injectable()
 export class UsersService {
@@ -18,11 +19,19 @@ export class UsersService {
         private readonly prismaService: PrismaService,
 
         // Injecting createUserProvider
-        private readonly createUserProvider:CreateUserProvider
-    
-    ) {}
+        private readonly createUserProvider: CreateUserProvider,
 
-            
+        // Injecting createUserProvider
+        private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
+
+    ) { }
+
+    public async findOneByEmail(email: string) {
+        return await this.findOneUserByEmailProvider.findOneByEmail(email);
+    }
+    async createUser(user: CreateUserDto) {
+        return this.createUserProvider.createUser(user);
+    }
 
     public findAll(
         getUsersParamDto: GetUsersParamDto,
@@ -31,7 +40,7 @@ export class UsersService {
 
     ) {
 
-        const isAuth = this.authService.isAuth();
+        // const isAuth = this.authService.isAuth();
         // console.log(isAuth);
         return [
             {
@@ -41,7 +50,7 @@ export class UsersService {
         ]
     }
 
-    // find user by ID'
+    // find user by ID
     public findOneById(id: number) {
 
         return {
@@ -55,11 +64,6 @@ export class UsersService {
     getUsers(): string {
         return "this is list of users"
     }
-
-    async createUser(user: CreateUserDto) {
-        return this.createUserProvider.createUser(user);
-    }
-
 
     patchUser(): string {
         return "user patched"

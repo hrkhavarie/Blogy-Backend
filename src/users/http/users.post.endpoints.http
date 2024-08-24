@@ -3,8 +3,9 @@ POST http://localhost:3003/users
 Content-Type: application/json
 
 {
-    "firstName": "Hamid" , 
+    "firstName": "Hamid Reza" , 
     "lastName": "khavarie",
-    "email": "hr.khavarieery9998ry1@gmail.com",
-    "password": "Hrp@4545" 
+    "email":"hrp.develop@gmail.com" , 
+    "password" : "Hrp@2545340"
+
 }

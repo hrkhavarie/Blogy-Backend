@@ -14,10 +14,15 @@ import { TagsService } from './tags/providers/tags.service';
 import { MetaOtionsModule } from './meta-otions/meta-otions.module';
 import { PrismaService } from './prisma/prisma.service';
 import { CreateUserProvider } from './users/providers/create-user.provider';
+import { FindOneUserByEmailProvider } from './users/providers/find-one-user-by-email.provider';
+import { AuthService } from './auth/providers/auth.service';
+import { SignInProvider } from './auth/providers/sign-in.provider';
+import { HashingProvider } from './auth/providers/hashing.provider';
+import { BcryptProvider } from './auth/providers/bcrypt.provider';
 
 @Module({
-  imports: [UsersModule, PostsModule, AuthModule, PrismaModule, TagsModule, MetaOtionsModule],
+  imports: [UsersModule, PostsModule, AuthModule, PrismaModule, TagsModule, MetaOtionsModule ],
   controllers: [AppController , UsersController, AuthController],
-  providers: [AppService , UsersService , PostsService, TagsService , PrismaService , CreateUserProvider],
+  providers: [AppService , UsersService , PostsService, TagsService , PrismaService , CreateUserProvider ,  FindOneUserByEmailProvider , AuthService , SignInProvider , ]
 })
 export class AppModule {}

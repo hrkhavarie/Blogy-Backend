@@ -1,4 +1,4 @@
 
-GET http://localhost:3003/users/34/
+GET http://localhost:3003/users/2/
 ?limit=10
 &page=2
